@@ -1,0 +1,6 @@
+Helpers for creating Domain Specific Languages (a.k.a. pretty APIs) embedded in Python
+
+currently contains:
+
+    - a function to create DeclarativeMetaClasses
+    - a base class/mixin to save kwargs passed to init on the object
