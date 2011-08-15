@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import unittest
+import unittest2 as unittest
 
 from dsl_tools import *
 
@@ -8,6 +8,47 @@ class KWArgsAutoSaverTests(unittest.TestCase):
     def test_kwargs_saved(self):
         kwaas = KWArgAutoSaver(my_key='my_val')
         self.assertEqual(kwaas.my_key, 'my_val')
+
+class ClassPropertyTests(unittest.TestCase):
+    def test_getter(self):
+        class Foo(object):
+            @ReadOnlyClassProperty
+            def name(cls):
+                return cls.__name__
+        self.assertEqual(Foo.name, 'Foo')
+        self.assertEqual(Foo().name, 'Foo')
+    @unittest.skip("setters don't work")
+    def test_setter_decorator(self):
+        class Foo(object):
+            _var = 5
+            @ClassProperty
+            def var(cls):
+                return cls._var
+            @var.setter
+            def var(cls, val):
+                cls._var = val
+        self.assertEqual(Foo.var, 5)
+        self.assertEqual(Foo._var, 5)
+        Foo.var = 6
+        self.assertEqual(Foo.var, 6)
+        self.assertEqual(Foo._var, 6)
+    @unittest.skip("setters don't work")
+    def test_setter(self):
+        class Foo(object):
+            _var = 5
+            def _get_var(cls):
+                return cls._var
+            def _set_var(cls, val):
+                cls._var = val
+            var = ClassProperty(_get_var, _set_var)
+        self.assertEqual(Foo.var, 5)
+        self.assertEqual(Foo._var, 5)
+        print Foo.__dict__
+        Foo.var = 6
+        print Foo.__dict__
+        self.assertEqual(Foo.var, 6)
+        self.assertEqual(Foo._var, 6)
+
 
 class DeclarativeMetaclassTests(unittest.TestCase):
     def setUp(self):

@@ -4,6 +4,19 @@ class KWArgAutoSaver(object):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+class ReadOnlyClassProperty(property):
+    #def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    def __init__(self, fget=None, doc=None):
+        args = []
+        for f in fget,: # fset, fdel:
+            if f and not isinstance(f, classmethod):  # don't double-wrap
+                f = classmethod(f)
+            args.append(f)
+        args.append(doc)
+        return super(ReadOnlyClassProperty, self).__init__(*args)
+    def __get__(self, cls, owner):
+        return self.fget.__get__(None, owner)()
+
 def make_declarative_metaclass(
     declarations_name, declared_type=None,
     filter_func=None,
