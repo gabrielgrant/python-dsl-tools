@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='python-dsl-tools',
-    version='0.1.0dev',
+    version='0.2.0dev',
     author='Gabriel Grant',
     packages=['dsl_tools',],
     license='LGPL',
