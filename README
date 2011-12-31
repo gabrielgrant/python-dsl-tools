@@ -4,3 +4,13 @@ currently contains:
 
     - a function to create DeclarativeMetaClasses
     - a base class/mixin to save kwargs passed to init on the object
+    - a classinstancemethod decorator, which allows an instancemethod
+      to be called on an uninstantiated class by automatically creating
+      an instance.
+
+
+TODO
+
+At the moment, classinstancemethod just instantiates the class with no
+parameters, but ideally it should be possible to pass it args and kwargs
+with which to instantiate.

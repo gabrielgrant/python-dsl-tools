@@ -49,6 +49,19 @@ class ClassPropertyTests(unittest.TestCase):
         self.assertEqual(Foo.var, 6)
         self.assertEqual(Foo._var, 6)
 
+class ClassInstanceMethodTests(unittest.TestCase):
+    def setUp(self):
+        class MyClass(object):
+            @classinstancemethod
+            def my_meth(self, i):
+                return self, i
+        self.cls = MyClass
+    def test_call_on_class(self):
+        instance, i = self.cls.my_meth(2)
+        self.assertEqual(i, 2)
+    def test_call_on_instance(self):
+        instance = self.cls()
+        self.assertEqual(instance.my_meth(2), (instance, 2))
 
 class DeclarativeMetaclassTests(unittest.TestCase):
     def setUp(self):

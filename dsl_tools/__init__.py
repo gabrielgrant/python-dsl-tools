@@ -4,6 +4,14 @@ class KWArgAutoSaver(object):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+class classinstancemethod(object):
+    def __init__(self, function):
+        self.function = function
+    def __get__(self, obj, objtype):
+        if obj is None:
+            obj = objtype()
+        return self.function.__get__(obj, objtype)
+
 class ReadOnlyClassProperty(property):
     #def __init__(self, fget=None, fset=None, fdel=None, doc=None):
     def __init__(self, fget=None, doc=None):
